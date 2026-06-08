@@ -3,268 +3,541 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>地震學與地球結構分析報告 - 第三章</title>
+    <title>地震學與地球結構 - 第三章：透過地震波探索地球構造</title>
     <style>
         :root {
-            --primary-color: #1e3a8a;
-            --secondary-color: #3b82f6;
-            --accent-color: #ef4444;
+            --primary-color: #0f172a;
+            --sidebar-bg: #1e293b;
+            --sidebar-hover: #334155;
+            --active-color: #3b82f6;
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
-            --text-color: #1e293b;
-            --text-light: #64748b;
+            --text-color: #334155;
             --border-color: #e2e8f0;
+            --caption-bg: #f1f5f9;
         }
 
         body {
             font-family: 'Helvetica Neue', Arial, 'Microsoft JhengHei', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            line-height: 1.7;
             margin: 0;
             padding: 0;
+            display: flex;
+            min-height: 100vh;
         }
 
-        header {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        /* 側邊導覽列 */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            color: #f1f5f9;
+            padding: 20px 0;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            overflow-y: auto;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            z-index: 100;
         }
 
-        header h1 {
+        .sidebar-header {
+            padding: 0 20px 20px 20px;
+            border-bottom: 1px solid #475569;
+            margin-bottom: 15px;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.25rem;
             margin: 0;
-            font-size: 2.2rem;
+            color: #fff;
             font-weight: 700;
-            letter-spacing: 0.5px;
         }
 
-        header p {
-            margin: 10px 0 0 0;
-            font-size: 1.1rem;
-            opacity: 0.9;
+        .sidebar-header p {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin: 5px 0 0 0;
         }
 
-        .container {
-            max-width: 1100px;
-            margin: 40px auto;
-            padding: 0 20px;
+        .nav-btn {
+            width: 100%;
+            padding: 14px 20px;
+            background: none;
+            border: none;
+            color: #cbd5e1;
+            text-align: left;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s ease;
+            border-left: 4px solid transparent;
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 30px;
+        .nav-btn:hover {
+            background-color: var(--sidebar-hover);
+            color: #fff;
         }
 
-        @media (max-width: 900px) {
-            .grid {
-                grid-template-columns: 1fr;
-            }
+        .nav-btn.active {
+            background-color: #0f172a;
+            color: #fff;
+            border-left-color: var(--active-color);
+            font-weight: bold;
         }
 
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            padding: 30px;
-            margin-bottom: 30px;
-            border: 1px solid var(--border-color);
+        .nav-btn span {
+            margin-right: 10px;
         }
 
-        .card h2 {
-            color: var(--primary-color);
+        /* 主內容區 */
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 40px;
+            max-width: 1000px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: #0f172a;
+            font-size: 2.2rem;
             margin-top: 0;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: #1e3a8a;
             font-size: 1.5rem;
-            border-left: 5px solid var(--secondary-color);
-            padding-left: 12px;
-            margin-bottom: 20px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
         }
 
-        .image-container {
-            text-align: center;
-            margin: 25px 0;
-            background: #fafafa;
-            padding: 15px;
-            border-radius: 8px;
+        p {
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        /* 圖片區塊設計 */
+        .image-card {
+            background-color: var(--card-bg);
             border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px 0;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            text-align: center;
         }
 
-        .image-container img {
+        .image-card img {
             max-width: 100%;
             height: auto;
             border-radius: 6px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            background-color: #fff;
         }
 
         .image-caption {
             margin-top: 15px;
-            font-size: 0.95rem;
-            color: var(--text-color);
-            text-align: left;
-            background-color: #f1f5f9;
             padding: 15px;
-            border-radius: 6px;
-            border-left: 4px solid var(--primary-color);
-        }
-
-        .table-responsive {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-            font-size: 0.95rem;
-        }
-
-        th, td {
-            padding: 12px 15px;
+            background-color: var(--caption-bg);
+            border-left: 4px solid var(--active-color);
+            border-radius: 0 8px 8px 0;
             text-align: left;
-            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95rem;
+            color: #1e293b;
+            line-height: 1.6;
         }
 
-        th {
-            background-color: #f1f5f9;
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        tr:hover {
-            background-color: #f8fafc;
-        }
-
-        .badge {
+        .image-caption strong {
+            color: #1e3a8a;
             display: inline-block;
-            padding: 4px 8px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+
+        /* 學術重點提示 */
+        .badge {
             background-color: #e0f2fe;
             color: #0369a1;
-            margin-right: 5px;
-        }
-
-        .code-block {
-            background-color: #0f172a;
-            color: #f8fafc;
-            padding: 15px;
-            border-radius: 6px;
-            font-family: 'Courier New', Courier, monospace;
+            padding: 3px 8px;
+            border-radius: 4px;
             font-size: 0.85rem;
-            overflow-x: auto;
-            margin: 15px 0;
+            font-weight: 600;
+            margin-right: 8px;
         }
 
-        footer {
+        .formula-box {
+            background-color: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Cambria', 'Times New Roman', serif;
+            font-size: 1.15rem;
             text-align: center;
-            padding: 30px;
-            color: var(--text-light);
-            font-size: 0.9 shadow;
-            border-top: 1px solid var(--border-color);
-            margin-top: 60px;
+            margin: 15px 0;
+            border-left: 4px solid #64748b;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>地震學與地球結構課程資源中心</h1>
-        <p>參考教材：An Introduction to Seismology, Earthquakes, and Earth Structure</p>
-    </header>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>地震學與地球結構</h2>
+            <p>第 3 章 核心理論與圖鑑展示</p>
+        </div>
+        <button class="nav-btn active" onclick="switchTab('sec3-1')"><span>3.1</span> 前言 Introduction</button>
+        <button class="nav-btn" onclick="switchTab('sec3-2')"><span>3.2</span> 折射地震學 Refraction</button>
+        <button class="nav-btn" onclick="switchTab('sec3-3')"><span>3.3</span> 反射地震學 Reflection</button>
+        <button class="nav-btn" onclick="switchTab('sec3-4')"><span>3.4</span> 球體地球中的波傳播</button>
+        <button class="nav-btn" onclick="switchTab('sec3-5')"><span>3.5</span> 體波走時與地球構造</button>
+        <button class="nav-btn" onclick="switchTab('sec3-6')"><span>3.6</span> 上部地函結構 Mantle</button>
+        <button class="nav-btn" onclick="switchTab('sec3-7')"><span>3.7</span> 下部地函與地核結構</button>
+        <button class="nav-btn" onclick="switchTab('sec3-8')"><span>3.8</span> 地函與地核的組成</button>
+    </div>
 
-    <div class="container">
-        <div class="grid">
-            <div class="main-content">
-                <div class="card">
-                    <h2>📊 觀測數據分析：震測剖面圖 (Record Section)</h2>
-                    <p>本專案透過自動化 Python 腳本 <code>seismicwave_sort.py</code> 讀取 CWASN SAC 格式的垂直分量 (Z) 地震資料，進行帶通濾波 (0.5-5.0 Hz) 與振幅正規化後，繪製出以下之專業地震波形觀測剖面圖：</p>
-                    
-                    <div class="image-container">
-                        <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/record_section.png" alt="地震觀測震測剖面圖 (Record Section)" onerror="this.src='https://github.com/zxcvbnm010043-bot/seismology_HW7_CH3/blob/main/record_section.png?raw=true'">
-                        
-                        <div class="image-caption">
-                            <strong>💡 圖片詳細說明與地震學解讀：</strong><br>
-                            1. <strong>軸向定義</strong>：本圖的 <strong>X 軸為震央距離 (Distance, km)</strong>，<strong>Y 軸為走時 (Travel Time, seconds)</strong>。圖中的每一條震盪波形線代表不同觀測測站所接收到的垂直分量（Z分量）實測震波訊號。<br>
-                            2. <strong>波形排列與走時趨勢</strong>：所有觀測站依照與震央的距離由近到遠（由左至右）依序排列。隨著震央距離的增加，地震波抵達測站所需的時間也隨之增加，在空間中清晰地勾勒出地震學中經典的<strong>走時曲線 (Travel-Time Curve)</strong> 軌跡。<br>
-                            3. <strong>P波與S波辨識</strong>：在剖面圖中，最左側各通道中最先抵達（走時較短）、振幅較小且頻率較高的初達波相為 <strong>P 波 (Primary Wave)</strong>；而隨後抵達、振幅明顯放大、週期較長且能量顯著的波相則為 <strong>S 波 (Secondary Wave)</strong>。藉由觀測兩者的抵達時間差（S-P 時差），可進一步反演該區域地殼與上部地函的速度構造。
-                        </div>
-                    </div>
-                </div>
+    <div class="main-content">
 
-                <div class="card">
-                    <h2>📚 第三章 課程講義與核心主題</h2>
-                    <p>以下為本課程第三章的核心單元規劃，重點在於利用地震波探測地殼結構與地球內部的物理性質：</p>
-                    
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>章節</th>
-                                    <th>主題名稱</th>
-                                    <th>核心內容概述</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><span class="badge">CH 3.1</span></td>
-                                    <td><strong>前言 Introduction</strong></td>
-                                    <td>介紹如何利用地震波走時、波形作為探針來研究地球內部結構的基本原理，以及走時逆問題的初探。</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="badge">CH 3.2</span></td>
-                                    <td><strong>折射地震學 Refraction Seismology</strong></td>
-                                    <td>探討地震波在不同岩層界面產生的折射現象與首波 (Head Waves)。包含平坦地層與傾斜地層的走時計算方法，以及如何定出康拉德面與莫霍面。</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="badge">CH 3.3</span></td>
-                                    <td><strong>反射地震學 Reflection Seismology</strong></td>
-                                    <td>詳細介紹地震波在垂直/傾斜界面的反射機制、走時曲線（雙曲線特徵）及其在震測勘探與地殼深部構造研究中的應用。</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="badge">CH 3.4</span></td>
-                                    <td><strong>球體地球中的地震波傳播</strong></td>
-                                    <td>考量地球球體幾何效應下的射線參數 (Ray Parameter, p)、射線路徑與走時方程。</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sidebar">
-                <div class="card">
-                    <h2>💻 數據處理工具說明</h2>
-                    <p>本平台底層整合了強大的 Python 地震學分析腳本 <code>seismicwave_sort.py</code>，其核心處理流程如下：</p>
-                    <ul style="padding-left: 20px; font-size: 0.95rem; margin-bottom: 0;">
-                        <li><strong>自動讀取與篩選</strong>：自動掃描 <code>CWASN</code> 目錄下的 SAC 檔案，優先篩選垂直分量通道（如 HHZ, EHZ）。</li>
-                        <li><strong>資料清洗</strong>：針對同一測站僅保留時間最完整之觀測片段，剔除碎片重複資料。</li>
-                        <li><strong>數位信號處理</strong>：套用 0.5 - 5.0 Hz 的帶通濾波器 (Bandpass Filter)，有效濾除微震雜訊，突顯 P/S 波相。</li>
-                        <li><strong>正規化處理</strong>：進行震幅震央距加權正規化，確保遠處測站的微弱訊號也能清晰可見。</li>
-                    </ul>
-                </div>
-
-                <div class="card">
-                    <h2>🛠️ 本地環境運行</h2>
-                    <p>若要在本地端重現此分析與繪圖結果，請配置以下 Python 環境：</p>
-                    <div class="code-block">
-# 安裝核心地震學與繪圖套件
-pip install obspy matplotlib numpy Pillow markdown
-                    </div>
-                    <div class="code-block">
-# 執行分析與繪圖腳本
-python seismicwave_sort.py
-                    </div>
+        <div id="sec3-1" class="tab-content active">
+            <h1>3.1 前言 Introduction</h1>
+            <p>本章探討如何利用地球表面所觀測到的地震波走時（Travel Times）與波形震幅，作為深部地球結構的探針。透過觀測地表測站的訊號，我們得以進行地震學的反演問題（Inverse Problems），解開地殼、地函以及地球核心的神秘面紗。</p>
+            
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-1/3-1-1.png" alt="圖 3-1-1">
+                <div class="image-caption">
+                    <strong>📊 圖 3-1-1 說明【地震學探針與基本射線幾何】</strong><br>
+                    本圖展示了地震波射線穿透地球內部的基本幾何結構與射線路徑。地震波自震源發射後，在非均勻的地球介質中傳播，其路徑受到介質速度隨深度變化的影響而產生彎曲。圖中呈現了地表觀測站分布與波動走時曲線的對應關係，為後續折射與反射地震學研究奠定幾何光學的基礎。
                 </div>
             </div>
         </div>
+
+        <div id="sec3-2" class="tab-content">
+            <h1>3.2 折射地震學 Refraction Seismology</h1>
+            <p>當地震波以臨界角（Critical Angle）入射至速度較高之下層界面時，會產生沿界面傳播的「首波 (Head Wave)」，並不斷向上折射回地表。這是人類歷史上定出莫霍面（Moho）以及定量量測地殼厚度最經典的物理方法。</p>
+            
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-2/3-2-1.png" alt="圖 3-2-1">
+                <div class="image-caption">
+                    <strong>📊 圖 3-2-1 說明【雙層平坦介面的臨界折射與首波產生機制】</strong><br>
+                    本圖清晰說明了惠更斯原理在臨界折射界面上的應用。當入射角符合斯乃爾定律 $\sin i_c = v_1 / v_2$ 時，震波在速度邊界產生滑行波，並在其後方激發出呈線性平面波前傳播的「首波（Head wave）」，這也是折射地震學觀測的核心實體。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-2/3-2-2.png" alt="圖 3-2-2">
+                <div class="image-caption">
+                    <strong>📊 圖 3-2-2 說明【折射波與直接波走時曲線交叉點分析】</strong><br>
+                    此圖顯示了經典的距離-走時關係圖（T-X 圖）。圖中直接波是一條通過原點、斜率為 $1/v_1$ 的直線；折射波則是一條不通過原點（具截距時間 $t_i$）、斜率為 $1/v_2$ 的直線。兩線之交點稱為「交叉距離（Crossover Distance）」，可用於精準推算上層地殼的厚度。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-2/3-2-3.png" alt="圖 3-2-3">
+                <div class="image-caption">
+                    <strong>📊 圖 3-2-3 說明【多層平坦介面地殼構造之走時方程推導】</strong><br>
+                    當地殼構造推廣為多層結構時（如沉積層、上地殼、下地殼），各層間的首波將各自形成具備不同斜率與截距時間的直線走時分支。透過階梯式的截距時間計算，地震學家可逐層反演出地殼內部隨深度遞增的速度層序。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-2/3-2-4.png" alt="圖 3-2-4">
+                <div class="image-caption">
+                    <strong>📊 圖 3-2-4 說明【傾斜地層界面對折射走時與視速度的影響】</strong><br>
+                    若地下界面存在傾斜角（Dipping Layer），則往上迎角（Updip）與下順角（Downdip）兩個方向觀測到的折射波斜率將不再對稱，兩者對應的斜率倒數稱為「視速度（Apparent Velocity）」。本圖呈現了解構傾斜角度所需的雙向放炮觀測幾何學。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-2/3-2-6.png" alt="圖 3-2-6">
+                <div class="image-caption">
+                    <strong>📊 圖 3-2-6 說明【地殼下部莫霍面觀測之 Pn 波實測震振幅特徵】</strong><br>
+                    展示了真實觀測中的地函頂部折射波 Pn 波。隨著震央距跨越上百公里，直接波（Pg）能量逐漸衰減，而自莫霍面折射出的 Pn 波因其在高速介質中傳播，將在遠距離處成為最先抵達的初達波。圖中並標註了震幅衰減規律。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-2/3-2-9.png" alt="圖 3-2-9">
+                <div class="image-caption">
+                    <strong>📊 圖 3-2-9 說明【全球與區域地殼厚度折射剖面綜合應用】</strong><br>
+                    此圖呈現了利用大尺度折射勘探反演出的地殼深部構造構造圖。剖面清楚地揭示出海洋地殼（較薄，約 5-7 km）與大陸地殼（較厚，約 30-50 km）在莫霍面深度上的劇烈過渡與變化，為板塊構造學說提供實證。
+                </div>
+            </div>
+        </div>
+
+        <div id="sec3-3" class="tab-content">
+            <h1>3.3 反射地震學 Reflection Seismology</h1>
+            <p>反射地震學主要利用接近垂直入射的震波訊號，捕捉不同阻抗（Impedance）界面反射回來的能量。其走時曲線在 T-X 圖上呈現特徵的「雙曲線」，廣泛應用於石油與天然氣資源勘探以及精細地殼分層成像。</p>
+            
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-3/3-3-1.png" alt="圖 3-3-1">
+                <div class="image-caption">
+                    <strong>📊 圖 3-3-1 說明【單層界面反射幾何射線路徑與垂直走時】</strong><br>
+                    展示了震源至界面反射再回到地表接收點的幾何路徑。利用幾何直角三角形，反射走時方程可寫為 $t^2 = x^2/v^2 + 4h^2/v^2$，其中 $x$ 為偏移距（Offset），$h$ 為界面深度，奠定了正常時差修正的基礎。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-3/3-3-2.png" alt="圖 3-3-2">
+                <div class="image-caption">
+                    <strong>📊 圖 3-3-2 說明【反射波雙曲線走時與正常時差 (NMO) 物理概念】</strong><br>
+                    在走時圖上，反射波走時隨距離延伸呈現雙曲線外觀。隨偏移距增加而產生的時間延遲，稱為「正常時差 (Normal Moveout, NMO)」。圖中清楚標示了如何藉由 NMO 修正（將雙曲線拉平），將非垂直入射的走時轉換為垂直入射走時。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-3/3-3-6.png" alt="圖 3-3-6">
+                <div class="image-caption">
+                    <strong>📊 圖 3-3-6 說明【共同中間點 (CMP) 資料採集與多道疊加技術】</strong><br>
+                    展示了現代震測勘探中核心的「共同中間點 (Common Mid-Point, CMP)」採集幾何學。藉由多對不同的震源與接收器對同一個地下位置點進行重複抽樣（覆蓋次數），在經過 NMO 修正後疊加（Stacking），能大幅消除隨機雜訊，倍增地下反射界面的訊噪比。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-3/3-3-7.png" alt="圖 3-3-7">
+                <div class="image-caption">
+                    <strong>📊 圖 3-3-7 說明【實務工業震測勘探剖面與地層阻抗成像】</strong><br>
+                    這是一張經過完整資料處理（含濾波、疊加、偏移成像）後的反射地震時間剖面圖。圖中連續且明暗交替的反射同相軸，直接對應了地層中密度的突變界面（如沉積不整合面、斷層滑移面等），是極具商業與科研價值的地下透視圖。
+                </div>
+            </div>
+        </div>
+
+        <div id="sec3-4" class="tab-content">
+            <h1>3.4 球體地球中的地震波傳播 Seismic Waves in a Spherical Earth</h1>
+            <p>當地震傳播考量到真實地球的「球面幾何效應」時，传统的平坦層狀模型必須修正。在此幾何坐標下，描述震波前進的重要守恆物理量為球面射線參數（Ray Parameter） $p$。</p>
+            
+            <div class="formula-box">
+                球體斯乃爾定律： p = (r · sin i) / v = 常數
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-4/3-4-1.png" alt="圖 3-4-1">
+                <div class="image-caption">
+                    <strong>📊 圖 3-4-1 說明【球體坐標系下的斯乃爾定律與射線參數守恆】</strong><br>
+                    此圖推導了在圓弧球層幾何下地震波的傳播特徵。由於地球半徑 $r$ 隨著向內深入而遞減，射線參數定義為 $p = r \sin i / v$，沿著同一條傳播路徑此值保持常數不變。這使得射線在向下穿透速度遞增的地層時，入射角 $i$ 會不斷變大，直至達到最低轉折點（Turning Point, $i=90^\circ$）後彎曲折返回地表。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-4/3-4-3.png" alt="圖 3-4-3">
+                <div class="image-caption">
+                    <strong>📊 圖 3-4-3 說明【速度連續遞增介面下的彎曲射線路徑分析】</strong><br>
+                    當地球內部的波速隨深度呈現連續漸變而非斷崖式跳躍時，射線路徑不會產生銳利的折射角，而是形成平滑、向上彎曲的弧形軌跡。本圖展現了不同出射角的射線其穿透深度與傳播弧長的非線性依賴關係。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-4/3-4-4.png" alt="圖 3-4-4">
+                <div class="image-caption">
+                    <strong>📊 圖 3-4-4 說明【韋謝特-黑格羅茲 (Wiechert-Herglotz) 走時逆問題反演】</strong><br>
+                    本圖呈現了經典的 Wiechert-Herglotz 積分反演法幾何原理。只要在地表完整觀測到走時變化率 $dT/d\Delta$（即射線參數 $p$ 隨角度的分佈），便能透過此幾何物理積分公式，直接計算出地下任何深度處的絕對地震波速，是早期建立地球一維速度模型的科學基石。
+                </div>
+            </div>
+        </div>
+
+        <div id="sec3-5" class="tab-content">
+            <h1>3.5 體波走時與地球內部構造 Body Wave Travel Times and Earth Structure</h1>
+            <p>體波（縱波 P 與橫波 S）在穿透整個地球內部的過程中，會受到核幔邊界（CMB）、內核邊界（ICB）的反射與折射，衍生出極為複雜的震相命名系統（如 PP, PcP, PKP, SKS ）。</p>
+            
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-5/3-5-1.png" alt="圖 3-5-1">
+                <div class="image-caption">
+                    <strong>📊 圖 3-5-1 說明【全球主要地震波震相穿透傳播全景路徑圖】</strong><br>
+                    這是一幅極具代表性的地球射線路徑圖，詳細標註了各類核心震相：穿過地函的 P/S 波、在液態外核傳播的 K 波（如 PKP）、在固態內核傳播的 I 波（如 PKIKP），以及在核幔邊界反射的 PcP，勾勒出完整的地球射線幾何光學圖譜。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-5/3-5-2.png" alt="圖 3-5-2">
+                <div class="image-caption">
+                    <strong>📊 圖 3-5-2 說明【全球標準一維速度模型 PREM 隨深度的分佈特徵】</strong><br>
+                    此曲線圖展示了地震學界公認的「初步參考地球模型（PREM）」。橫軸為深度（或半徑），縱軸為縱波（Vp）、橫波（Vs）與密度分佈。圖中清晰顯示外核（2891 km 以下）橫波波速驟降為 0，直接證實了外核為流體狀態。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-5/3-5-3.png" alt="圖 3-5-3">
+                <div class="image-caption">
+                    <strong>📊 圖 3-5-3 說明【全球大尺度走時主曲線分支圖 (Jeffreys-Bullen Map)】</strong><br>
+                    橫軸為震央距角度（$0^\circ - 180^\circ$），縱軸為總走時（分鐘）。此圖彙整了數十年來全球測站接收到的核心震相走時交織曲線。多個重疊的分支（如 PKP 的 AB, BC, DF 分支）對應了地球內部不同波速跳躍界面的折射聚焦現象。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-5/3-5-4.png" alt="圖 3-5-4">
+                <div class="image-caption">
+                    <strong>📊 圖 3-5-4 說明【液態低速外核造成的 P 波地表觀測影帶 (Shadow Zone)】</strong><br>
+                    由於地函底部的 P 波速度高於外核頂部的 P 波速度，當 P 波入射核幔邊界時會產生向內折射的透鏡聚焦效應，導致在震央距 $103^\circ$ 到 $143^\circ$ 之間的地表觀測站幾乎接收不到直達 P 波，此區域在地震學中被定義為經典的「P波影帶」。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-5/3-5-7.png" alt="圖 3-5-7">
+                <div class="image-caption">
+                    <strong>📊 圖 3-5-7 說明【地函底部核心反射波 PcP 的走時特徵與外核半徑估算】</strong><br>
+                    此圖側重分析由地函底部（核幔邊界 CMB）垂直或大角度反射回地表的 PcP 波走時。藉由高精度的 PcP 與直達 P 波的時間差（PcP-P），地震學家得以將地球外核的半徑精確鎖定在 3480 公里左右。
+                </div>
+            </div>
+        </div>
+
+        <div id="sec3-6" class="tab-content">
+            <h1>3.6 上部地函結構 Upper Mantle Structure</h1>
+            <p>上部地函包含了地球動力學最活潑的區域，包含低速帶（LVZ）以及由橄欖石礦物晶格相變所引發的兩個重要波速突變面：410公里與660公里間斷面。</p>
+            
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-6/3-6-1.png" alt="圖 3-6-1">
+                <div class="image-caption">
+                    <strong>📊 圖 3-6-1 說明【軟流圈低速帶 (LVZ) 速度局部凹陷特徵與局部熔融】</strong><br>
+                    此局部波速放大圖顯示了深度在 100-200 公里之間，縱波與橫波速度皆出現明顯凹陷（下降）的現象。此構造對應軟流圈中的「低速帶 (Low-Velocity Zone)」，通常被解釋為高溫高壓下岩石發生部分熔融（約 1%）的結果，也是板塊得以滑動的滑潤層。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-6/3-6-2.png" alt="圖 3-6-2">
+                <div class="image-caption">
+                    <strong>📊 圖 3-6-2 說明【地函過渡帶中 410km 與 660km 速度階梯跳躍】</strong><br>
+                    展示了地函過渡帶（Transition Zone）內速度隨深度呈梯形階躍跳升的特徵。在 410 km 處，橄欖石（Olivine）相變為瓦茲利石（Wadsleyite）；在 660 km 處，林伍德石（Ringwoodite）分解為橋石（Bridgmanite）和方鎂石。這兩個突變面會在地表產生顯著的反射波與折射三叉分支。
+                </div>
+            </div>
+        </div>
+
+        <div id="sec3-7" class="tab-content">
+            <h1>3.7 下部地函與地核結構 Lower Mantle and Core Structure</h1>
+            <p>下部地函基底存在著極度不均勻的 D" 層，而核幔邊界（CMB）更是地球內部物理性質對比最劇烈的地方（固體岩石至液體鐵合金）。內核邊界（ICB）則又回歸至固態結晶核。</p>
+            
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-7/3-7-1.png" alt="圖 3-7-1">
+                <div class="image-caption">
+                    <strong>📊 圖 3-7-1 說明【下部地函基底 D" 層之超低速帶 (ULVZ) 橫向不均勻性】</strong><br>
+                    本示意圖描繪了緊鄰核幔邊界上方約 200-300 公里厚的特殊區域—— D" 層。近年地震層析成像在此處發現了局部速度下降高達 10-30% 的「超低速帶 (Ultra-Low Velocity Zones, ULVZ)」，可能是地核物質外滲或地函熱柱的發源根基。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-7/3-7-2.png" alt="圖 3-7-2">
+                <div class="image-caption">
+                    <strong>📊 圖 3-7-2 說明【核幔邊界 (CMB) 固液介面兩側物理參數劇烈對比斷崖】</strong><br>
+                    本圖以圖表形式強調了 2891 km 深度（CMB）兩側的物理性質跳躍：密度由地函的 5.5 $g/cm^3$ 暴增到地核的 10 $g/cm^3$；縱波波速從 13.7 $km/s$ 驟降到 8.1 $km/s$，橫波完全歸零。這是地球內部最大、最顯著的化學與物理不連續面。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-7/3-7-3.png" alt="圖 3-7-3">
+                <div class="image-caption">
+                    <strong>📊 圖 3-7-3 說明【外核液態介面中 PKP 震相分支幾何計算】</strong><br>
+                    此幾何圖詳解了進入液態外核後再度折射而出的 PKP 射線路徑。由於外核流體對 P 波的聚焦效應，原本在影帶中消失的波會在大於 $143^\circ$ 的遠距離測站再次聚焦、強烈現身，形成了多個明顯的時間差觀測分支。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-7/3-7-4.png" alt="圖 3-7-4">
+                <div class="image-caption">
+                    <strong>📊 圖 3-7-4 說明【內核邊界 (ICB) 反射與固態內核剪切波探討】</strong><br>
+                    展示了在 5150 公里深的內核邊界（ICB）之波動轉換機制。當 P 波自液態外核擊中固態內核時，除了反射出 PKiKP，亦能局部轉換為內核中的剪切橫波（J波，震相為 PKJKP），這為內核屬固態提供了最直接的震波彈性波動證據。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-7/3-7-7.png" alt="圖 3-7-7">
+                <div class="image-caption">
+                    <strong>📊 圖 3-7-7 說明【固態內核地震波速各向異性 (Anisotropy) 觀測證據】</strong><br>
+                    本圖呈現了穿過內核的 PKIKP 波速在不同方向上的速度差：沿著地球自轉軸（南北向）穿過內核的震波速度，比沿赤道面（東西向）穿過的波速快了約 1-2%。這揭示了內核鐵結晶格可能具有定向排列的各向異性構造。
+                </div>
+            </div>
+        </div>
+
+        <div id="sec3-8" class="tab-content">
+            <h1>3.8 地函與地核的組成 Composition of Mantle and Core</h1>
+            <p>本節結合高溫高壓實驗室岩石力學量測與天體物理模型，將觀測到的地震波速度、密度曲線，轉譯為真實地球內部的化學組成與礦物相成分。</p>
+            
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-8/3-8-2.png" alt="圖 3-8-2">
+                <div class="image-caption">
+                    <strong>📊 圖 3-8-2 說明【高溫高壓礦物物理相變模型與真實波速之比對】</strong><br>
+                    此圖疊加了高溫高壓實驗室觀測（如金剛石砧壓機模擬）與地震學標準波速曲線。結果證實地函主要由富含鐵鎂的矽酸鹽岩石（如橄欖岩 Pyrolite 模型）組成，其相變深度完全吻合上部地函觀測到的速度間斷面。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-8/3-8-3.png" alt="圖 3-8-3">
+                <div class="image-caption">
+                    <strong>📊 圖 3-8-3 說明【純鐵與鐵合金在核心環境下的熔融溫度曲線對比】</strong><br>
+                    展示了鐵在數百萬大氣壓下的熔融狀態示意圖。由於地核實際密度略低於純鐵，顯示核心中除了鐵鎳外亦含有輕元素（如硫、矽、氧）。外核溫度高於熔點呈液態，而內核因壓力巨大令熔點提升，從而結晶析出呈固態。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-8/3-8-5.png" alt="圖 3-8-5">
+                <div class="image-caption">
+                    <strong>📊 圖 3-8-5 說明【地球全尺度品質密度與重力加速度 (g) 隨深度分布模型】</strong><br>
+                    橫軸為半徑或深度，縱軸分別顯示內部密度的梯級上升以及重力加速度（g）的波動。值得注意的是，g 值在地函中接近 10 $m/s^2$ 守恆，直至地核內部才因核心品質高度集中而開始線性遞減至中心的 0。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-8/3-8-6.png" alt="圖 3-8-6">
+                <div class="image-caption">
+                    <strong>📊 圖 3-8-6 說明【地震波非彈性衰減品質因子 (Q值) 隨深度分布】</strong><br>
+                    本圖呈現地球物質對震波能量內能消耗的指標——品質因子 $Q$ 值分佈。軟流圈因為存在部分熔融與晶格蠕變，表現出極低的 $Q$ 值（代表高衰減、震波能量極易在此被吸收）；而下部地函與固態內核則具備較高的 $Q$ 值。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-8/3-8-7.png" alt="圖 3-8-7">
+                <div class="image-caption">
+                    <strong>📊 圖 3-8-7 說明【橫波與縱波波速比值 (Vp/Vs) 與岩石化學成分關聯性】</strong><br>
+                    此分布散佈圖探討了 $Vp/Vs$ 比值（或帕松比 Poisson's ratio）作為岩性判別指標的依賴性。例如地殼中長英質岩石（如花崗岩）與基性岩石（如玄武岩、輝長岩）在比值上存在顯著區隔，這使得科學家可不開挖便得知地殼深部的岩石種類。
+                </div>
+            </div>
+
+            <div class="image-card">
+                <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/fig/3-8/3-8-9.png" alt="圖 3-8-9">
+                <div class="image-caption">
+                    <strong>📊 圖 3-8-9 說明【三維全球地震層析成像 (Tomography) 與地函熱對流成像】</strong><br>
+                    最後一幅圖打破了一維層狀的局限，展示了現代三維地震層析成像結果。圖中藍色代表波速偏快（溫度低、如古老板塊俯衝殘留殘骸），紅色代表波速偏慢（溫度高、如地函熱柱或洋中脊湧升流），勾勒出整個地球內部的動態熱對流與品質循環全景。
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <footer>
-        <p>© 2026 地震學與地球結構課程資源網頁 | Data parsed from CWASN SAC dataset</p>
-    </footer>
+    <script>
+        function switchTab(tabId) {
+            // 隱藏所有分頁內容
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            // 取消所有按鈕選取狀態
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // 顯示目前選取的分頁
+            document.getElementById(tabId).classList.add('active');
+
+            // 將對應按鈕設為選取狀態
+            const activeBtn = Array.from(buttons).find(btn => btn.getAttribute('onclick').includes(tabId));
+            if (activeBtn) activeBtn.classList.add('active');
+
+            // 自動置頂主內容區
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 
 </body>
 </html>
