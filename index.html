@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>地震學與地球結構分析報告 - 第三章</title>
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #3b82f6;
+            --accent-color: #ef4444;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Microsoft JhengHei', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        header p {
+            margin: 10px 0 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .card h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 1.5rem;
+            border-left: 5px solid var(--secondary-color);
+            padding-left: 12px;
+            margin-bottom: 20px;
+        }
+
+        .image-container {
+            text-align: center;
+            margin: 25px 0;
+            background: #fafafa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+
+        .image-caption {
+            margin-top: 15px;
+            font-size: 0.95rem;
+            color: var(--text-color);
+            text-align: left;
+            background-color: #f1f5f9;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-radius: 4px;
+            background-color: #e0f2fe;
+            color: #0369a1;
+            margin-right: 5px;
+        }
+
+        .code-block {
+            background-color: #0f172a;
+            color: #f8fafc;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-light);
+            font-size: 0.9 shadow;
+            border-top: 1px solid var(--border-color);
+            margin-top: 60px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>地震學與地球結構課程資源中心</h1>
+        <p>參考教材：An Introduction to Seismology, Earthquakes, and Earth Structure</p>
+    </header>
+
+    <div class="container">
+        <div class="grid">
+            <div class="main-content">
+                <div class="card">
+                    <h2>📊 觀測數據分析：震測剖面圖 (Record Section)</h2>
+                    <p>本專案透過自動化 Python 腳本 <code>seismicwave_sort.py</code> 讀取 CWASN SAC 格式的垂直分量 (Z) 地震資料，進行帶通濾波 (0.5-5.0 Hz) 與振幅正規化後，繪製出以下之專業地震波形觀測剖面圖：</p>
+                    
+                    <div class="image-container">
+                        <img src="https://raw.githubusercontent.com/zxcvbnm010043-bot/seismology_HW7_CH3/main/record_section.png" alt="地震觀測震測剖面圖 (Record Section)" onerror="this.src='https://github.com/zxcvbnm010043-bot/seismology_HW7_CH3/blob/main/record_section.png?raw=true'">
+                        
+                        <div class="image-caption">
+                            <strong>💡 圖片詳細說明與地震學解讀：</strong><br>
+                            1. <strong>軸向定義</strong>：本圖的 <strong>X 軸為震央距離 (Distance, km)</strong>，<strong>Y 軸為走時 (Travel Time, seconds)</strong>。圖中的每一條震盪波形線代表不同觀測測站所接收到的垂直分量（Z分量）實測震波訊號。<br>
+                            2. <strong>波形排列與走時趨勢</strong>：所有觀測站依照與震央的距離由近到遠（由左至右）依序排列。隨著震央距離的增加，地震波抵達測站所需的時間也隨之增加，在空間中清晰地勾勒出地震學中經典的<strong>走時曲線 (Travel-Time Curve)</strong> 軌跡。<br>
+                            3. <strong>P波與S波辨識</strong>：在剖面圖中，最左側各通道中最先抵達（走時較短）、振幅較小且頻率較高的初達波相為 <strong>P 波 (Primary Wave)</strong>；而隨後抵達、振幅明顯放大、週期較長且能量顯著的波相則為 <strong>S 波 (Secondary Wave)</strong>。藉由觀測兩者的抵達時間差（S-P 時差），可進一步反演該區域地殼與上部地函的速度構造。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>📚 第三章 課程講義與核心主題</h2>
+                    <p>以下為本課程第三章的核心單元規劃，重點在於利用地震波探測地殼結構與地球內部的物理性質：</p>
+                    
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>章節</th>
+                                    <th>主題名稱</th>
+                                    <th>核心內容概述</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="badge">CH 3.1</span></td>
+                                    <td><strong>前言 Introduction</strong></td>
+                                    <td>介紹如何利用地震波走時、波形作為探針來研究地球內部結構的基本原理，以及走時逆問題的初探。</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge">CH 3.2</span></td>
+                                    <td><strong>折射地震學 Refraction Seismology</strong></td>
+                                    <td>探討地震波在不同岩層界面產生的折射現象與首波 (Head Waves)。包含平坦地層與傾斜地層的走時計算方法，以及如何定出康拉德面與莫霍面。</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge">CH 3.3</span></td>
+                                    <td><strong>反射地震學 Reflection Seismology</strong></td>
+                                    <td>詳細介紹地震波在垂直/傾斜界面的反射機制、走時曲線（雙曲線特徵）及其在震測勘探與地殼深部構造研究中的應用。</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge">CH 3.4</span></td>
+                                    <td><strong>球體地球中的地震波傳播</strong></td>
+                                    <td>考量地球球體幾何效應下的射線參數 (Ray Parameter, p)、射線路徑與走時方程。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="card">
+                    <h2>💻 數據處理工具說明</h2>
+                    <p>本平台底層整合了強大的 Python 地震學分析腳本 <code>seismicwave_sort.py</code>，其核心處理流程如下：</p>
+                    <ul style="padding-left: 20px; font-size: 0.95rem; margin-bottom: 0;">
+                        <li><strong>自動讀取與篩選</strong>：自動掃描 <code>CWASN</code> 目錄下的 SAC 檔案，優先篩選垂直分量通道（如 HHZ, EHZ）。</li>
+                        <li><strong>資料清洗</strong>：針對同一測站僅保留時間最完整之觀測片段，剔除碎片重複資料。</li>
+                        <li><strong>數位信號處理</strong>：套用 0.5 - 5.0 Hz 的帶通濾波器 (Bandpass Filter)，有效濾除微震雜訊，突顯 P/S 波相。</li>
+                        <li><strong>正規化處理</strong>：進行震幅震央距加權正規化，確保遠處測站的微弱訊號也能清晰可見。</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h2>🛠️ 本地環境運行</h2>
+                    <p>若要在本地端重現此分析與繪圖結果，請配置以下 Python 環境：</p>
+                    <div class="code-block">
+# 安裝核心地震學與繪圖套件
+pip install obspy matplotlib numpy Pillow markdown
+                    </div>
+                    <div class="code-block">
+# 執行分析與繪圖腳本
+python seismicwave_sort.py
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 地震學與地球結構課程資源網頁 | Data parsed from CWASN SAC dataset</p>
+    </footer>
+
+</body>
+</html>
